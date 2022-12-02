@@ -1,5 +1,5 @@
 import { keysToCamel } from 'src/utils/keysToCamel';
-import { IArtworkResponse } from 'src/types/artwork';
+import { IArtwork, IArtworkResponse } from 'src/types/artwork';
 
 class BaseProvider {
   baseUrl = '';
@@ -31,8 +31,14 @@ class ApiProvider extends BaseProvider {
   getAllArtworks = async (page?: number) => {
     const fields =
       '&fields=id,title,artist_display,date_display,artist_title,image_id';
-    const { data, error } = await this.get<IArtworkResponse>(
+    const { data, error } = await this.get<IArtworkResponse<IArtwork[]>>(
       `/artworks?page=${page}${fields}`,
+    );
+    return { data: keysToCamel(data), error };
+  };
+  getArtworkDetail = async (id: number) => {
+    const { data, error } = await this.get<IArtworkResponse<IArtwork>>(
+      `/artworks/${id}`,
     );
     return { data: keysToCamel(data), error };
   };

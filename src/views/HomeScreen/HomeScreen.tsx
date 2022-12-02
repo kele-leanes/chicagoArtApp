@@ -1,10 +1,14 @@
 import React from 'react';
 import { FlatList, RefreshControl, Text, View } from 'react-native';
 import { Card } from 'src/components';
+import { RootStackScreenProps } from 'src/navigation/rootStack';
+import { IArtwork } from 'src/types/artwork';
 import { useHomeScreen } from './HomeScreen.hooks';
 import { styles } from './HomeScreen.styles';
 
-export const HomeScreen: React.FC = () => {
+export const HomeScreen: React.FC<RootStackScreenProps<'Home'>> = ({
+  navigation,
+}) => {
   const { artworks, loading, hasError, getAllArtworks, onLoadMore } =
     useHomeScreen();
 
@@ -19,10 +23,16 @@ export const HomeScreen: React.FC = () => {
     ) : null;
   };
 
+  const RenderItem: React.FC<{ item: IArtwork }> = ({ item }) => {
+    const handlePress = () => navigation.navigate('Details', { ...item });
+
+    return <Card data={item} onPress={handlePress} />;
+  };
+
   return (
     <FlatList
       data={artworks}
-      renderItem={Card}
+      renderItem={RenderItem}
       onEndReached={onLoadMore}
       ListEmptyComponent={ListEmptyComponent}
       refreshControl={

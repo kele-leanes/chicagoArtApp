@@ -5,6 +5,7 @@ export interface IArtwork {
   artistTitle: string;
   title: string;
   imageId: string;
+  mediumDisplay?: string;
 }
 
 interface IConfig {
@@ -19,8 +20,8 @@ interface IPagination {
   totalPages: number;
 }
 
-export interface IArtworkResponse {
+export interface IArtworkResponse<T> {
   config: IConfig;
-  data: IArtwork[];
+  data: T;
   pagination: IPagination;
 }
