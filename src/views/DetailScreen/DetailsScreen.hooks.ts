@@ -4,6 +4,7 @@ import { ImageLoadEventData, NativeSyntheticEvent } from 'react-native';
 import apiProvider from 'src/api/apiProvider';
 import { RootStackParamList } from 'src/navigation/rootStack';
 import { IArtwork } from 'src/types/artwork';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const useDetailScreen = () => {
   const { params } = useRoute<RouteProp<RootStackParamList, 'Details'>>();
@@ -47,5 +48,54 @@ export const useImageHeight = () => {
   return {
     imageSize,
     getImageHeight,
+  };
+};
+
+export const useHeartButtonActions = (id: string) => {
+  const [isLiked, setIsLiked] = useState(false);
+
+  const readItemFromStorage = useCallback(async () => {
+    const item = await AsyncStorage.getItem('@art_favorites');
+    if (item !== null) {
+      const array: string[] = JSON.parse(item);
+      setIsLiked(array.includes(id));
+    }
+  }, [id]);
+
+  const writeItemToStorage = async () => {
+    try {
+      const item = await AsyncStorage.getItem('@art_favorites');
+      if (item !== null) {
+        const array: string[] = JSON.parse(item);
+        if (array.includes(id)) {
+          const newArray = array.filter(storedId => storedId !== id);
+          await AsyncStorage.setItem(
+            '@art_favorites',
+            JSON.stringify(newArray),
+          );
+          return setIsLiked(false);
+        } else {
+          await AsyncStorage.setItem(
+            '@art_favorites',
+            JSON.stringify([...array, id]),
+          );
+          return setIsLiked(true);
+        }
+      } else {
+        await AsyncStorage.setItem('@art_favorites', JSON.stringify([id]));
+        return setIsLiked(true);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    readItemFromStorage();
+  }, [readItemFromStorage]);
+
+  return {
+    isLiked,
+    handleLike: writeItemToStorage,
   };
 };

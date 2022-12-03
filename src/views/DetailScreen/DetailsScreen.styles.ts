@@ -8,14 +8,14 @@ export const styles = StyleSheet.create({
   },
   image: {
     width: width,
-    height: 400,
+    height: width,
   },
   center: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
-    fontSize: 40,
+    fontSize: 36,
   },
   bold: {
     fontWeight: 'bold',
@@ -26,5 +26,10 @@ export const styles = StyleSheet.create({
   card: {
     paddingHorizontal: 16,
     paddingVertical: 20,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
