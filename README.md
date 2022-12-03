@@ -46,7 +46,7 @@ component
     styles.ts
 ```
 In the case of dependencies I tried the fewer as possible.
-* async-storage (Used for offline support)
+* async-storage (Used for data persistence)
 * react-navigation (Used to create a root stack for the navigation, useful if app stars growing)
 * react-native-vector-icons (Used for svg icons)
 * react-native-reanimated (Used for animations)
