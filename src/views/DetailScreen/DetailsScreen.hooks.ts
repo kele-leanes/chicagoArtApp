@@ -1,6 +1,5 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
-import { ImageLoadEventData, NativeSyntheticEvent } from 'react-native';
 import apiProvider from 'src/api/apiProvider';
 import { RootStackParamList } from 'src/navigation/rootStack';
 import { IArtwork } from 'src/types/artwork';
@@ -30,24 +29,6 @@ export const useDetailScreen = () => {
     loading,
     hasError,
     artwork,
-  };
-};
-
-export const useImageHeight = () => {
-  const [imageSize, setImageSize] = useState({});
-
-  const getImageHeight = (event: NativeSyntheticEvent<ImageLoadEventData>) => {
-    const {
-      nativeEvent: {
-        source: { height },
-      },
-    } = event;
-    setImageSize({ height });
-  };
-
-  return {
-    imageSize,
-    getImageHeight,
   };
 };
 

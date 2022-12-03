@@ -2,11 +2,7 @@ import React from 'react';
 import { ActivityIndicator, Image, ScrollView, View, Text } from 'react-native';
 import { HeartButton } from 'src/components/HeartButton';
 import { RootStackScreenProps } from 'src/navigation/rootStack';
-import {
-  useDetailScreen,
-  useHeartButtonActions,
-  useImageHeight,
-} from './DetailsScreen.hooks';
+import { useDetailScreen, useHeartButtonActions } from './DetailsScreen.hooks';
 import { styles } from './DetailsScreen.styles';
 
 export const DetailScreen: React.FC<RootStackScreenProps<'Details'>> = ({
@@ -14,7 +10,6 @@ export const DetailScreen: React.FC<RootStackScreenProps<'Details'>> = ({
 }) => {
   const { id } = route.params;
   const { loading, artwork } = useDetailScreen();
-  const { imageSize, getImageHeight } = useImageHeight();
 
   const { isLiked, handleLike } = useHeartButtonActions(String(id));
 
@@ -28,9 +23,8 @@ export const DetailScreen: React.FC<RootStackScreenProps<'Details'>> = ({
         <>
           <Image
             source={{ uri: imageUri }}
-            style={[styles.image, imageSize]}
-            onLoad={getImageHeight}
-            resizeMode={'contain'}
+            style={styles.image}
+            resizeMode={'cover'}
           />
           <View style={styles.card}>
             <View style={styles.titleContainer}>
